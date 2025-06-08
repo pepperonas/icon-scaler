@@ -1,4 +1,4 @@
-# androidicon
+# icon-scaler
 
 Ein Python-Tool zur automatischen Generierung von Android App Icons in allen erforderlichen Auflösungen.
 
@@ -26,20 +26,20 @@ pip install -r requirements.txt
 
 ```bash
 # Repository klonen oder Datei herunterladen
-chmod +x androidicon.py
+chmod +x icon-scaler.py
 
 # Optional: Systemweit installieren
-sudo cp androidicon.py /usr/local/bin/androidicon
+sudo cp icon-scaler.py /usr/local/bin/icon-scaler
 ```
 
 ## Verwendung
 
 ```bash
 # Mit Python
-python androidicon.py icon.png
+python icon-scaler.py icon.png
 
 # Oder wenn systemweit installiert
-androidicon icon.jpg
+icon-scaler icon.jpg
 ```
 
 ## Ausgabe
@@ -77,7 +77,7 @@ icon/
 ## Beispiel
 
 ```bash
-$ androidicon logo.png
+$ icon-scaler logo.png
 ✓ Erstellt: icon/res/mipmap-ldpi/ic_launcher.png (36x36px)
 ✓ Erstellt: icon/res/mipmap-mdpi/ic_launcher.png (48x48px)
 ✓ Erstellt: icon/res/mipmap-hdpi/ic_launcher.png (72x72px)
