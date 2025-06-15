@@ -1,6 +1,6 @@
-# icon-scaler
+# Android Icon Scaler
 
-Ein Python-Tool zur automatischen Generierung von Android App Icons in allen erforderlichen Auflösungen.
+Ein Python-Tool zur automatischen Generierung von Android App Icons in allen erforderlichen Auflösungen mit GUI und Command-Line Interface.
 
 ## Features
 
@@ -8,38 +8,50 @@ Ein Python-Tool zur automatischen Generierung von Android App Icons in allen erf
 - ✅ Behält PNG-Transparenz bei
 - ✅ Erstellt alle Android mipmap-Auflösungen automatisch
 - ✅ Optimierte PNG-Ausgabe
-- ✅ Einfache Command-Line-Nutzung
+- ✅ **GUI mit Drag-and-Drop Funktionalität**
+- ✅ **Button zum Öffnen des Icon-Ordners im Finder/Explorer**
+- ✅ **Fortschrittsanzeige und Status-Updates**
+- ✅ Command-Line-Interface für Automation
+- ✅ Cross-Platform (Windows, macOS, Linux)
 
 ## Installation
 
 ### Voraussetzungen
 
 - Python 3.6+
-- Pillow
+- Pillow (automatisch installiert)
+- tkinterdnd2 (optional, für Drag-and-Drop)
 
 ```bash
 # Abhängigkeiten installieren
 pip install -r requirements.txt
-```
 
-### Tool installieren
-
-```bash
-# Repository klonen oder Datei herunterladen
-chmod +x icon-scaler.py
-
-# Optional: Systemweit installieren
-sudo cp icon-scaler.py /usr/local/bin/icon-scaler
+# Optional: Drag-and-Drop Support
+pip install tkinterdnd2
 ```
 
 ## Verwendung
+
+### GUI-Anwendung (empfohlen)
+
+```bash
+python icon_scaler_gui.py
+```
+
+**Features der GUI:**
+- 🎯 **Drag-and-Drop:** Bilder einfach in die Anwendung ziehen
+- 📁 **Ordner öffnen:** Button zum direkten Öffnen des erstellten Icon-Ordners
+- 📊 **Fortschritt:** Live-Anzeige des Verarbeitungsfortschritts
+- ⚠️ **Fehlerbehandlung:** Benutzerfreundliche Fehlermeldungen
+
+### Command-Line Interface
 
 ```bash
 # Mit Python
 python icon-scaler.py icon.png
 
-# Oder wenn systemweit installiert
-icon-scaler icon.jpg
+# Direkter Aufruf (wenn ausführbar gemacht)
+./icon-scaler.py icon.jpg
 ```
 
 ## Ausgabe
@@ -74,10 +86,34 @@ icon/
 | xxhdpi  | 144x144 px | Full HD                             |
 | xxxhdpi | 192x192 px | 4K Geräte                           |
 
-## Beispiel
+## Screenshots
+
+### GUI-Anwendung
+```
+┌─────────────────────────────────────┐
+│        Android Icon Generator       │
+├─────────────────────────────────────┤
+│                                     │
+│     ┌─────────────────────────┐     │
+│     │                         │     │
+│     │   Bild hier hineinziehen │     │
+│     │  oder klicken zum        │     │
+│     │     Auswählen           │     │
+│     │                         │     │
+│     └─────────────────────────┘     │
+│                                     │
+│     ████████████████████████        │
+│                                     │
+│   ✅ Icons erfolgreich erstellt!    │
+│                                     │
+│     [ 📁 Icon-Ordner öffnen ]       │
+└─────────────────────────────────────┘
+```
+
+## Beispiel (Command-Line)
 
 ```bash
-$ icon-scaler logo.png
+$ python icon-scaler.py logo.png
 ✓ Erstellt: icon/res/mipmap-ldpi/ic_launcher.png (36x36px)
 ✓ Erstellt: icon/res/mipmap-mdpi/ic_launcher.png (48x48px)
 ✓ Erstellt: icon/res/mipmap-hdpi/ic_launcher.png (72x72px)
