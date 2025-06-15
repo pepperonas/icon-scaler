@@ -18,17 +18,16 @@ Ein Python-Tool zur automatischen Generierung von Android App Icons in allen erf
 
 ### Voraussetzungen
 
-- Python 3.6+
+- Python 3.8+ (empfohlen: Python 3.11+)
 - Pillow (automatisch installiert)
-- tkinterdnd2 (optional, für Drag-and-Drop)
+- tkinterdnd2 (für Drag-and-Drop - automatisch installiert)
 
 ```bash
 # Abhängigkeiten installieren
 pip install -r requirements.txt
-
-# Optional: Drag-and-Drop Support
-pip install tkinterdnd2
 ```
+
+**Hinweis:** Drag-and-Drop erfordert tkinterdnd2 v0.4.3+ für Python 3.13 Kompatibilität.
 
 ## Verwendung
 
@@ -39,10 +38,12 @@ python icon_scaler_gui.py
 ```
 
 **Features der GUI:**
-- 🎯 **Drag-and-Drop:** Bilder einfach in die Anwendung ziehen
-- 📁 **Ordner öffnen:** Button zum direkten Öffnen des erstellten Icon-Ordners
-- 📊 **Fortschritt:** Live-Anzeige des Verarbeitungsfortschritts
-- ⚠️ **Fehlerbehandlung:** Benutzerfreundliche Fehlermeldungen
+- 🎯 **Drag-and-Drop:** Bilder einfach in die Anwendung ziehen oder per Klick auswählen
+- 📁 **Ordner öffnen:** Button zum direkten Öffnen des erstellten Icon-Ordners im Finder/Explorer
+- 📊 **Fortschritt:** Live-Anzeige des Verarbeitungsfortschritts mit Progressbar
+- 🌙 **Dunkles Theme:** Augenschonendes dunkles Design mit hohem Kontrast
+- ⚠️ **Fehlerbehandlung:** Benutzerfreundliche Fehlermeldungen und Status-Updates
+- ✨ **Visuelles Feedback:** Farbige Hervorhebung beim Drag-over und Erfolgsmeldungen
 
 ### Command-Line Interface
 
@@ -88,27 +89,33 @@ icon/
 
 ## Screenshots
 
-### GUI-Anwendung
+### GUI-Anwendung (Dunkles Theme)
 ```
 ┌─────────────────────────────────────┐
-│        Android Icon Generator       │
+│        Android Icon Generator       │ (Weiß auf Dunkelgrau)
 ├─────────────────────────────────────┤
 │                                     │
 │     ┌─────────────────────────┐     │
-│     │                         │     │
-│     │   Bild hier hineinziehen │     │
+│     │                         │     │ (Grauer Rahmen)
+│     │   Bild hier hineinziehen │     │ (Weiße Schrift)
 │     │  oder klicken zum        │     │
 │     │     Auswählen           │     │
 │     │                         │     │
 │     └─────────────────────────┘     │
 │                                     │
-│     ████████████████████████        │
+│     ████████████████████████        │ (Grüne Progressbar)
 │                                     │
-│   ✅ Icons erfolgreich erstellt!    │
+│   ✅ Icons erfolgreich erstellt!    │ (Helle Schrift)
 │                                     │
-│     [ 📁 Icon-Ordner öffnen ]       │
+│       [ 📁 Ordner öffnen ]          │ (Grüner Button)
 └─────────────────────────────────────┘
 ```
+
+**Neue Features:**
+- **Drag-and-Drop funktioniert** mit tkinterdnd2 v0.4.3+
+- **Dunkles Theme** für bessere Lesbarkeit
+- **Button unter Status** für bessere UX
+- **Verbesserte Kontraste** und Farbschema
 
 ## Beispiel (Command-Line)
 
