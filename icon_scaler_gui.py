@@ -9,12 +9,20 @@ import sys
 import subprocess
 import platform
 from pathlib import Path
-from tkinter import Tk, Label, Button, Frame, filedialog, messagebox
+from tkinter import Tk, Label, Button, Frame, filedialog, messagebox, BooleanVar, Checkbutton
 from tkinter import ttk
 from tkinter.ttk import Progressbar
 import threading
 
 from PIL import Image, ImageTk
+
+# rembg wird nur bei Bedarf importiert
+rembg_available = False
+try:
+    from rembg import remove as remove_background
+    rembg_available = True
+except ImportError:
+    pass
 
 
 ICON_SIZES = {
@@ -31,11 +39,12 @@ class IconScalerGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Android Icon Scaler")
-        self.root.geometry("500x430")
+        self.root.geometry("500x470")
         self.root.resizable(False, False)
-        
+
         self.current_icon_dir = None
-        
+        self.remove_bg_var = BooleanVar(value=False)
+
         self.setup_ui()
         self.setup_drag_drop()
         
@@ -75,7 +84,21 @@ class IconScalerGUI:
         
         self.drop_frame.bind("<Button-1>", lambda e: self.select_file())
         self.drop_label.bind("<Button-1>", lambda e: self.select_file())
-        
+
+        # Checkbox für Hintergrundentfernung
+        self.remove_bg_checkbox = Checkbutton(
+            self.root,
+            text="Hintergrund entfernen (transparent)",
+            variable=self.remove_bg_var,
+            font=("Arial", 11),
+            bg='#2b2b2b',
+            fg='#ffffff',
+            selectcolor='#3c3c3c',
+            activebackground='#2b2b2b',
+            activeforeground='#ffffff'
+        )
+        self.remove_bg_checkbox.pack(pady=(10, 5))
+
         # Style für Progressbar
         style = ttk.Style()
         style.theme_use('clam')
@@ -170,33 +193,46 @@ class IconScalerGUI:
         ).start()
         
     def process_file_thread(self, file_path):
+        remove_bg = self.remove_bg_var.get()
+
         self.root.after(0, self.update_status, "Verarbeite Bild...")
         self.root.after(0, self.progress.configure, {'value': 0})
-        
+
         if not os.path.exists(file_path):
             self.root.after(0, self.show_error, f"Datei nicht gefunden: {file_path}")
             return
-            
+
         valid_extensions = ['.jpg', '.jpeg', '.png']
         file_ext = Path(file_path).suffix.lower()
         if file_ext not in valid_extensions:
             self.root.after(0, self.show_error, "Nur JPG und PNG Dateien werden unterstützt!")
             return
-            
+
+        # Prüfe ob rembg verfügbar ist, wenn Hintergrundentfernung gewünscht
+        if remove_bg and not rembg_available:
+            self.root.after(0, self.show_error, "rembg ist nicht installiert!\nInstalliere es mit: pip install rembg")
+            return
+
         input_path = Path(file_path)
         input_dir = input_path.parent
-        
+
         icon_dir = input_dir / "icon"
         icon_dir.mkdir(exist_ok=True)
         self.current_icon_dir = str(icon_dir)
-        
+
         try:
             with Image.open(file_path) as img:
                 if img.mode not in ('RGB', 'RGBA'):
                     img = img.convert('RGBA')
-                    
+
+                # Hintergrund entfernen falls gewünscht
+                if remove_bg:
+                    self.root.after(0, self.update_status, "Entferne Hintergrund...")
+                    img = remove_background(img)
+                    self.root.after(0, self.update_status, "Erstelle Icons...")
+
                 total_sizes = len(ICON_SIZES)
-                
+
                 for idx, (density, size) in enumerate(ICON_SIZES.items()):
                     density_dir = icon_dir / "res" / f"mipmap-{density}"
                     density_dir.mkdir(parents=True, exist_ok=True)

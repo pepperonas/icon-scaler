@@ -11,6 +11,14 @@ from pathlib import Path
 
 from PIL import Image
 
+# rembg wird nur bei Bedarf importiert
+rembg_available = False
+try:
+    from rembg import remove as remove_background
+    rembg_available = True
+except ImportError:
+    pass
+
 # Icon-Größen für verschiedene Android-Dichten
 ICON_SIZES = {
 	'ldpi': 36,
@@ -22,12 +30,13 @@ ICON_SIZES = {
 }
 
 
-def create_android_icons(input_file):
+def create_android_icons(input_file, remove_bg=False):
 	"""
 	Erstellt Android Icons aus einer Bilddatei
 
 	Args:
 		input_file: Pfad zur Eingabe-Bilddatei (JPG oder PNG)
+		remove_bg: Hintergrund entfernen für transparentes Ergebnis
 	"""
 	# Prüfe ob Datei existiert
 	if not os.path.exists(input_file):
@@ -55,6 +64,16 @@ def create_android_icons(input_file):
 			# Konvertiere zu RGBA für PNG-Unterstützung
 			if img.mode not in ('RGB', 'RGBA'):
 				img = img.convert('RGBA')
+
+			# Hintergrund entfernen falls gewünscht
+			if remove_bg:
+				if not rembg_available:
+					print("Fehler: rembg ist nicht installiert!")
+					print("Installiere es mit: pip install rembg")
+					return False
+				print("Entferne Hintergrund...")
+				img = remove_background(img)
+				print("✓ Hintergrund entfernt")
 
 			# Erstelle Icons für jede Dichte
 			for density, size in ICON_SIZES.items():
@@ -88,6 +107,11 @@ def main():
 		'input_file',
 		help='Pfad zur Bilddatei (JPG oder PNG)'
 	)
+	parser.add_argument(
+		'--remove-bg', '-r',
+		action='store_true',
+		help='Hintergrund entfernen für transparentes Icon'
+	)
 
 	args = parser.parse_args()
 
@@ -100,7 +124,7 @@ def main():
 		sys.exit(1)
 
 	# Erstelle Icons
-	success = create_android_icons(args.input_file)
+	success = create_android_icons(args.input_file, remove_bg=args.remove_bg)
 
 	if not success:
 		sys.exit(1)
